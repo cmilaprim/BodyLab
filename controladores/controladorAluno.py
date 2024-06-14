@@ -1,3 +1,5 @@
+from Exception.NumeroTelefoneInvalidoException import NumeroTelefoneInvalido
+from Exception.NomeNaoehAlfa import NomeNaoehAlfa
 from telas.telaAluno import TelaAluno
 from modelos.aluno import Aluno
 from modelos.endereco import Endereco
@@ -12,10 +14,14 @@ class ControladorAluno():
     def cadastrar_aluno(self):
         dados_aluno = self.__tela_aluno.pega_dados_aluno()
         nome = dados_aluno['nome']
+        if dados_aluno['nome'] not alfa:
+
         nome_aluno = self.buscar_aluno_por_nome(nome)
         if nome_aluno:
             self.__tela_aluno.mostra_mensagem("Aluno já cadastrado")
             return
+        if len(dados_aluno['numero_telefone']) != 11 or not dados_aluno['numero_telefone'].isnumeric:
+           raise NumeroTelefoneInvalido()
         endereco = Endereco(dados_aluno['rua'], dados_aluno['complemento'], dados_aluno['bairro'], dados_aluno['cidade'], dados_aluno['cep'])
         aluno = Aluno(dados_aluno['nome'], dados_aluno['numero_telefone'], dados_aluno['email'], matricula = None, endereco = endereco)
         self.__alunos.append(aluno)
@@ -55,9 +61,12 @@ class ControladorAluno():
         lista_opcoes = {1: self.cadastrar_aluno, 2: self.remover_aluno, 3: self.listar_alunos, 4: self.buscar_aluno_por_nome, 0: self.retornar}
 
         while True:
-            opcao_escolhida = self.__tela_aluno.tela_opcoes()
-            funcao_escolhida = lista_opcoes[opcao_escolhida]
-            funcao_escolhida()
+            try:
+                opcao_escolhida = self.__tela_aluno.tela_opcoes()
+                funcao_escolhida = lista_opcoes[opcao_escolhida]
+                funcao_escolhida()
+            except NumeroTelefoneInvalido:
+                self.__tela_aluno.mostra_mensagem("Número de telefone inválido")
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()

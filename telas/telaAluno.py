@@ -30,25 +30,33 @@ class TelaAluno(TelaAbstrata):
             [sg.Radio('Remover Aluno', "RD1", key='2')],
             [sg.Radio('Listar Alunos', "RD1", key='3')],
             [sg.Radio('Retornar', "RD1", key='0')],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            [sg.Button('Confirmar',button_color=('white', 'green')), sg.Cancel('Cancelar', button_color=('white', 'red'))]
         ]
         self.__window = sg.Window('Sistma BodyLab').Layout(layout)
 
     def pega_dados_aluno(self):
         sg.ChangeLookAndFeel('DarkPurple1')
         layout = [
-            [sg.Text("Cadastrar Aluno", font=('Helvetica', 25))],
-            [sg.Text('Nome: '), sg.InputText('', key='nome')],
-            [sg.Text('Numero de Telefone: '), sg.InputText('', key='numero_telefone')],
-            [sg.Text('E-mail: '), sg.InputText('', key='email')],
-            [sg.Text('Rua: '), sg.InputText('', key='rua')],
-            [sg.Text('Complemento: '), sg.InputText('', key='complemento')],
-            [sg.Text('Bairro: '), sg.InputText('', key='bairro')],
-            [sg.Text('Cidade: '), sg.InputText('', key='cidade')],
-            [sg.Text('CEP: '), sg.InputText('', key='cep')],
+            [sg.Text("Cadastrar Aluno", font=('Helvetica', 25, 'bold'), justification='center')],
+            [sg.Text('Nome: ', )],
+            [sg.InputText('', key='nome')],
+            [sg.Text('Numero de Telefone: ')],
+            [sg.InputText('', key='numero_telefone')],
+            [sg.Text('E-mail: ')],
+            [sg.InputText('', key='email')],
+            [sg.Text('Rua: ')],
+            [sg.InputText('', key='rua')],
+            [sg.Text('Complemento: ')],
+            [sg.InputText('', key='complemento')],
+            [sg.Text('Bairro: ')],
+            [sg.InputText('', key='bairro')],
+            [sg.Text('Cidade: ')],
+            [sg.InputText('', key='cidade')],
+            [sg.Text('CEP: ')],
+            [sg.InputText('', key='cep')],
             [sg.Button('Confirmar', button_color=('white', 'green')), sg.Cancel('Cancelar', button_color=('white', 'red'))]
         ]
-        self.__window = sg.Window('Sistema BodyLab', layout, element_justification='c')
+        self.__window = sg.Window('Sistema BodyLab').Layout(layout)
 
         button, values = self.open()
         nome = values['nome']
@@ -70,14 +78,27 @@ class TelaAluno(TelaAbstrata):
         string_aluno += "Telefone: " + str(dados_aluno["numero_telefone"]) + '\n'
         string_aluno += "E-mail: " + str(dados_aluno["email"]) + '\n'
         endereco = dados_aluno["endereco"]
-        string_aluno += "Endereço: Rua " + endereco + ', ' + endereco.complemento + ', ' + endereco.bairro + ', ' + endereco.cidade + ', ' + endereco.cep + '\n\n'
+        string_aluno += "Endereço: Rua " + endereco.rua + ', ' + endereco.complemento + ', ' + endereco.bairro + ', ' + endereco.cidade + ', ' + endereco.cep + '\n'
 
-        sg.Popup('-------- DADOS DO ALUNO ----------', string_aluno)
+        layout = [
+            [sg.Text('-------- DADOS DO ALUNO ----------', font=("Helvetica", 15, 'bold'))],
+            [sg.Text("Nome: ", font=("Helvetica", 10, 'bold')), sg.Text(dados_aluno["nome"])],
+            [sg.Text("Telefone: ", font=("Helvetica", 10, 'bold')), sg.Text(str(dados_aluno["numero_telefone"]))],
+            [sg.Text("E-mail: ", font=("Helvetica", 10, 'bold')), sg.Text(str(dados_aluno["email"]))],
+            [sg.Text("Endereço: ", font=("Helvetica", 10, 'bold')), sg.Text("Rua " + endereco.rua + ', ' + endereco.complemento + ', ' + endereco.bairro + ', ' + endereco.cidade + ', ' + endereco.cep)],
+            [sg.Button('OK', button_color=('white', 'green'))]
+        ]
+
+        self.__window = sg.Window('DADOS DO ALUNO', layout)
+
+        button, values = self.open()
+
+        self.close()
 
     def seleciona_aluno(self):
-        sg.ChangeLookAndFeel('DarkTeal4')
+        sg.ChangeLookAndFeel('DarkPurple1')
         layout = [
-            [sg.Text('-------- SELECIONAR ALUNO ----------', font=("Helvica", 25))],
+            [sg.Text('SELECIONAR ALUNO', font=("Helvica", 25, 'bold'))],
             [sg.Text('Digite o nome do aluno:', font=("Helvica", 15))],
             [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
             [sg.Button('Confirmar', button_color=('white', 'green')), sg.Cancel('Cancelar', button_color=('white', 'red'))]
